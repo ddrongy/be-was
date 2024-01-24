@@ -15,12 +15,17 @@ public class Database {
     private static Map<String, User> users = Maps.newHashMap();
 
     public static void addUser(User user) {
-        validate(user);
+        if (users.containsKey(user.getUserId())) {
+            throw new IllegalArgumentException("이미 존재하는 ID");
+        }
         users.put(user.getUserId(), user);
         logger.debug(user.toString());
     }
 
     public static User findUserById(String userId) {
+        if (!users.containsKey(userId)) {
+            throw new IllegalArgumentException("존재하지 않는 ID");
+        }
         return users.get(userId);
     }
 
@@ -28,9 +33,4 @@ public class Database {
         return users.values();
     }
 
-    private static void validate(User user) {
-        if (users.containsKey(user.getUserId())) {
-            throw new IllegalArgumentException("User ID already exists: " + user.getUserId());
-        }
-    }
 }

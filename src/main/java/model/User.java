@@ -28,6 +28,14 @@ public class User {
         return name;
     }
 
+    public void checkPassword(String password){
+        // throw 날리기가 나을지 ? 아니면 return이 나을지?
+//        return this.password.equals(password);
+        if (!this.password.equals(password)){
+            throw new IllegalArgumentException("비번이 틀림");
+        }
+    }
+
     @Override
     public String toString() {
         return "User [userId=" + userId + ", password=" + password + ", name=" + name + ", email=" + email + "]";
