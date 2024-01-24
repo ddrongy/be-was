@@ -2,11 +2,13 @@ package controller.user;
 
 import controller.Controller;
 import db.Database;
+import db.Session;
 import http.request.Request;
 import http.response.Response;
 import model.User;
 
 import java.util.Map;
+import java.util.UUID;
 
 import static util.Parser.parseQueryString;
 
@@ -21,6 +23,12 @@ public class LoginController extends Controller {
             User user = Database.findUserById(userId);
 
             user.checkPassword(password);
+
+            String sessionId = UUID.randomUUID().toString();
+            response.addHeader("Set-Cookie", "sid=" + sessionId + "; Path=/;");
+            // TO-DO: max-age, 세션 지속시간 + refresh session
+            Session.addSession(sessionId, user.getUserId());
+
             response.redirect("/index.html");
         }
         catch (IllegalArgumentException e) {
