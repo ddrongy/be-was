@@ -21,6 +21,10 @@ public class Request {
         return startLine.getHttpVersion();
     }
 
+    public Headers getHeader() {
+        return header;
+    }
+
     public String getFilePath() {
         String url = startLine.getUrl();
         if (url.endsWith(".html")) {

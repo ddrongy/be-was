@@ -27,6 +27,23 @@ public class CreateController extends Controller {
         }
     }
 
+    @Override
+    public void doPostAuthenticated(Request request, Response response) {
+        try{
+            Map<String, String> queryParams = parseQueryString(request.getBody());
+            validate(queryParams);
+            User user = new User(queryParams.get("userId"),
+                    queryParams.get("password"), queryParams.get("name"), queryParams.get("email"));
+            Database.addUser(user);
+
+            response.addHeader("Set-Cookie", "sid=" + request.getHeader().getCookie() + "; Path=/;");
+            response.redirect("/index.html");
+        }
+        catch (IllegalArgumentException e){
+            response.redirect("/user/form_failed.html");
+        }
+    }
+
     private void validate(Map<String, String> params){
         if (!params.containsKey("userId") ||
             !params.containsKey("password") ||

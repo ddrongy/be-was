@@ -1,7 +1,5 @@
 package db;
 
-import model.UserSession;
-
 import java.util.concurrent.ConcurrentHashMap;
 
 public class Session {
@@ -11,11 +9,7 @@ public class Session {
         sessions.put(sessionId, userId);
     }
 
-    public static String getSession(String sessionId) {
-        return sessions.get(sessionId);
-    }
-
-    public static void removeSession(String sessionId) {
-        sessions.remove(sessionId);
+    public static boolean isValidSession(String sessionId) {
+        return sessions.containsKey(sessionId);
     }
 }

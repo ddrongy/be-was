@@ -13,4 +13,11 @@ public class ResourceController extends Controller {
         response.ok(request.getFilePath());
     }
 
+    @Override
+    public void doGetAuthenticated(Request request, Response response) {
+        String contentType = getContentTypeByExtension(request.getFilePath());
+        response.addHeader("Content-Type", contentType);
+        response.addHeader("Set-Cookie", "sid=" + request.getHeader().getCookie() + "; Path=/;");
+        response.ok(request.getFilePath());
+    }
 }
